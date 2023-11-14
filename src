@@ -1,0 +1,101 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+class Employee {
+    private String id;
+    private String name;
+    private String department;
+
+    public Employee(String id, String name, String department) {
+        this.id = id;
+        this.name = name;
+        this.department = department;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDepartment() {
+        return department;
+    }
+}
+
+class HRModule {
+    private List<Employee> employees;
+
+    public HRModule() {
+        this.employees = new ArrayList<>();
+    }
+
+    public void hireEmployee(String id, String name, String department) {
+        Employee employee = new Employee(id, name, department);
+        employees.add(employee);
+        System.out.println("Employee hired: " + employee.getName());
+    }
+
+    public List<Employee> getEmployees() {
+        return new ArrayList<>(employees);
+    }
+}
+
+public class ERPSystem {
+    public static void main(String[] args) {
+        HRModule hrModule = new HRModule();
+        Scanner scanner = new Scanner(System.in);
+
+        while (true) {
+            System.out.println("\n1. Hire Employee");
+            System.out.println("2. Display Employees");
+            System.out.println("3. Exit");
+            System.out.print("Enter your choice: ");
+
+            int choice = 0;
+            try {
+                choice = scanner.nextInt();
+            } catch (java.util.InputMismatchException e) {
+                System.out.println("Invalid input. Please enter a number.");
+                scanner.nextLine(); // Consume the invalid input
+                continue;
+            }
+
+            switch (choice) {
+                case 1:
+                    hireEmployee(scanner, hrModule);
+                    break;
+                case 2:
+                    displayEmployees(hrModule);
+                    break;
+                case 3:
+                    System.out.println("Exiting ERP System. Goodbye!");
+                    scanner.close(); // Close the scanner before exiting
+                    return;
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+            }
+        }
+    }
+
+    private static void hireEmployee(Scanner scanner, HRModule hrModule) {
+        System.out.print("Enter employee ID: ");
+        String id = scanner.next();
+        System.out.print("Enter employee name: ");
+        String name = scanner.next();
+        System.out.print("Enter employee department: ");
+        String department = scanner.next();
+        hrModule.hireEmployee(id, name, department);
+    }
+
+    private static void displayEmployees(HRModule hrModule) {
+        List<Employee> employees = hrModule.getEmployees();
+        System.out.println("Employees:");
+        for (Employee employee : employees) {
+            System.out.println("ID: " + employee.getId() + ", Name: " + employee.getName() + ", Department: " + employee.getDepartment());
+        }
+    }
+}
